@@ -4,7 +4,7 @@ const int speaker = 11; // Set to the pin you connected the speaker to
 
 int LENGTH = 400; // Length of time to play the main notes
 
-int notes[4] = {100, 350, 600, 850}; // Values for the 4 notes used in the game
+int notes[3] = {100, 350, 600}; // Values for the 3 notes used in the game
 
 int gamepattern[20]; // Array to store game pattern in during play
 
@@ -22,7 +22,6 @@ void setup() {
   pinMode(6, INPUT); // Set up button pins
   pinMode(7, INPUT);
   pinMode(8, INPUT);
-  pinMode(9, INPUT);
   
   Serial.begin(9600); // Enable serial output so we can debug using the serial reader in the Arduino IDE
  
@@ -58,12 +57,6 @@ void main_menu()
       generate_game();
       play_game();
     }
-    if (digitalRead(9) == LOW)
-    {
-      difficulty = 4;
-      generate_game();
-      play_game();
-    }
   }
 }
 
@@ -86,7 +79,6 @@ void play_game()
   play_note(1, 100);
   play_note(2, 100);
   play_note(3, 100);
-  play_note(4, 100);
   delay(1000);
   for (int currentRound=1; (currentRound - 1)<=(difficulty * 5); currentRound++) // Number of rounds to play
     {
@@ -116,11 +108,6 @@ void play_game()
            {
              buttonPress = true;
              userInput = 3;
-           }
-           if (digitalRead(9) == LOW) // Button 4 Pressed
-           {
-             buttonPress = true;
-             userInput = 4;
            }
            if (buttonPress == true) // A button was Pressed
            {
@@ -171,14 +158,12 @@ void game_over(bool win) {
       play_note(1, 50);
       play_note(2, 50);
       play_note(3, 50);
-      play_note(4, 50);
     }
   }
   
   else {
     Serial.println("You Lose!");
     for (int i = 0; i < 6; i++){
-      play_note(4, 100);
       play_note(3, 100);
       play_note(2, 100);
       play_note(1, 100);
@@ -205,11 +190,6 @@ void testButtons() // Created this function to test buttons without having to ru
     {
       Serial.println("Button 3 Pressed");
       play_note(3, LENGTH);
-    }
-    if (digitalRead(9) == LOW)
-    {
-      Serial.println("Button 4 Pressed");
-      play_note(4, LENGTH);
     }
   }
 }
